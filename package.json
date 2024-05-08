@@ -18,6 +18,10 @@
     "npm",
     "package"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nithin-sivakumar/term-ai.git"
+  },
   "author": "Nithin Sivakumar",
   "license": "MIT",
   "dependencies": {
