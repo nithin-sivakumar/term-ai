@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import 'colors';
 import say from 'say';
 import minimist from 'minimist';
+import clipboard from 'clipboardy';
 
 const args = minimist(process.argv.slice(2));
 
@@ -29,6 +30,7 @@ const reader = readline.createInterface({
 
 const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
+const minWordLength = 2;
 const separator = '!!';
 const tts_speed = 1.2;
 let constraint =
@@ -51,6 +53,19 @@ async function intentionChecker(query) {
 }
 
 async function askTheAi(prompt) {
+  prompt = prompt.trim();
+
+  if (prompt == 'q' || prompt == 'Q') {
+    process.exit(0);
+  }
+
+  if (prompt.split(' ').length < minWordLength) {
+    console.log(
+      `Your prompt is too short to be processed by an AI. Kindly type at least ${minWordLength} words try again.`
+    );
+    process.exit(0);
+  }
+
   let intention = await intentionChecker(prompt);
 
   if (intention == 'Y') {
@@ -58,6 +73,12 @@ async function askTheAi(prompt) {
     const response = result.response;
     const text = response.text();
     console.log(text);
+    // Writing to clipboard
+    clipboard.write(text);
+    console.log(
+      `The code has been copied to your clipboard successfully!`.bgCyan.white
+        .bold
+    );
   } else {
     const result = await model.generateContent(prompt + constraint);
     const response = result.response;
@@ -73,10 +94,6 @@ export const askQuestion = async () => {
       'Greetings! How can I assist you today? (Q/q to quit)'.bgYellow.bold.red +
         ' ',
       async (prompt) => {
-        if (prompt == 'q' || prompt == 'Q') {
-          process.exit(0);
-        }
-
         await askTheAi(prompt);
 
         isFirstRequest = false;
@@ -89,10 +106,6 @@ export const askQuestion = async () => {
       'Do you have another question for me? (Q/q to quit)'.bgYellow.bold.red +
         ' ',
       async (prompt) => {
-        if (prompt == 'q' || prompt == 'Q') {
-          process.exit(0);
-        }
-
         await askTheAi(prompt);
 
         askQuestion();
