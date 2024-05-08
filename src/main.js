@@ -4,8 +4,23 @@ import readline from 'readline';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import 'colors';
 import say from 'say';
+import minimist from 'minimist';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+const args = minimist(process.argv.slice(2));
+
+const geminiKey = args['api-key'];
+
+if (!geminiKey) {
+  console.log(
+    `API_KEY not found. Kindly provide a valid Gemini API Key using`.yellow
+  );
+  console.log(`    npx termai --api-key XXXX`.red.bold);
+  console.log(`OR create a .env file and include`.yellow);
+  console.log(`    GEMINI_KEY=XXXX`.red.bold);
+  process.exit(-1);
+}
+
+const genAI = new GoogleGenerativeAI(geminiKey);
 
 const reader = readline.createInterface({
   input: process.stdin,
