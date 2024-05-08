@@ -1,6 +1,6 @@
 {
   "name": "term-ai",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Interact with a customized Gemini-pro right in your terminal.",
   "main": "index.js",
   "type": "module",
