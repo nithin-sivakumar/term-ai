@@ -57,7 +57,9 @@ export const askQuestion = async () => {
           isCode = true;
         }
 
-        const result = await model.generateContent(prompt + constraint);
+        const result = await model.generateContent(
+          prompt.split().length() > 3 ? prompt + constraint : prompt
+        );
         const response = result.response;
         const text = response.text();
 
@@ -105,7 +107,9 @@ export const askQuestion = async () => {
 
         // const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-        const result = await model.generateContent(prompt + constraint);
+        const result = await model.generateContent(
+          prompt.split().length() > 3 ? prompt + constraint : prompt
+        );
         const response = result.response;
         const text = response.text();
 
