@@ -17,7 +17,7 @@ const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 const separator = '!!';
 const tts_speed = 1.2;
 const constraint =
-  " .Don't include * character in your response and include a '!!' after the first meaningful sentence. Don't give the answer in points.  If the response can be answered in a single word or sentence, do it. If not, I want the response in a paragraph. Limit the number of words to 600. Be friendly and witty, and as savage and humorous as possible.";
+  " .Don't include * character in your response and include a '!!' after the first meaningful sentence. Don't give the answer in points. Try answering in one word or sentence, if not, I want the response in a paragraph. Limit the number of words to 600. Be friendly and witty, and as savage and humorous as possible.";
 
 let isFirstRequest = true;
 
