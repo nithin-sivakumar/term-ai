@@ -29,6 +29,7 @@ const reader = readline.createInterface({
 
 const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
+let code_words = ['api', 'code', 'program'];
 let isCode = false;
 const separator = '!!';
 const tts_speed = 1.2;
@@ -46,20 +47,17 @@ export const askQuestion = async () => {
           process.exit(0);
         }
 
-        if (
-          prompt.split(' ').includes('code') ||
-          prompt.split(' ').includes('Code') ||
-          prompt.split(' ').includes('Program') ||
-          prompt.split(' ').includes('program')
-        ) {
-          constraint =
-            ' . Generate just the code. No explanation needed. Do not include comments';
-          isCode = true;
-        }
+        let words = prompt.split('');
 
-        const result = await model.generateContent(
-          prompt.split().length() > 3 ? prompt + constraint : prompt
-        );
+        words.map((ele) => {
+          if (code_words.includes(ele.toLowerCase())) {
+            constraint =
+              ' . Generate just the code. No explanation needed. Do not include comments';
+            isCode = true;
+          }
+        });
+
+        const result = await model.generateContent(prompt + constraint);
         const response = result.response;
         const text = response.text();
 
@@ -94,22 +92,19 @@ export const askQuestion = async () => {
           process.exit(0);
         }
 
-        if (
-          prompt.split(' ').includes('code') ||
-          prompt.split(' ').includes('Code') ||
-          prompt.split(' ').includes('Program') ||
-          prompt.split(' ').includes('program')
-        ) {
-          constraint =
-            ' . Generate just the code. No explanation needed. Do not include comments';
-          isCode = true;
-        }
+        let words = prompt.split('');
+
+        words.map((ele) => {
+          if (code_words.includes(ele.toLowerCase())) {
+            constraint =
+              ' . Generate just the code. No explanation needed. Do not include comments';
+            isCode = true;
+          }
+        });
 
         // const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-        const result = await model.generateContent(
-          prompt.split().length() > 3 ? prompt + constraint : prompt
-        );
+        const result = await model.generateContent(prompt + constraint);
         const response = result.response;
         const text = response.text();
 
