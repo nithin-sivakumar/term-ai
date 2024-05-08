@@ -78,6 +78,8 @@ export const askQuestion = async () => {
         // }
 
         isFirstRequest = false;
+        isCode = false;
+
         askQuestion();
       }
     );
@@ -88,6 +90,17 @@ export const askQuestion = async () => {
       async (prompt) => {
         if (prompt == 'q' || prompt == 'Q') {
           process.exit(0);
+        }
+
+        if (
+          prompt.split(' ').includes('code') ||
+          prompt.split(' ').includes('Code') ||
+          prompt.split(' ').includes('Program') ||
+          prompt.split(' ').includes('program')
+        ) {
+          constraint =
+            ' . Generate just the code. No explanation needed. Do not include comments';
+          isCode = true;
         }
 
         // const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
@@ -103,6 +116,7 @@ export const askQuestion = async () => {
           console.log(text.bgBlack.green.bold);
         }
 
+        isCode = false;
         // const result = await model.generateContentStream([prompt]);
 
         // let text = '';
