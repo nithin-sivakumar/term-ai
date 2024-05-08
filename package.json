@@ -1,0 +1,32 @@
+{
+  "name": "term-ai",
+  "version": "1.0.6",
+  "description": "Interact with a customized Gemini-pro right in your terminal.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "convert": "babel --out-dir lib/ --copy-files index.js",
+    "build": "pkg lib/index.js --targets node16-linux-x64 -o term-ai"
+  },
+  "bin": {
+    "term-ai": "./index.js"
+  },
+  "keywords": [
+    "AI",
+    "terminal",
+    "npm",
+    "package"
+  ],
+  "author": "Nithin Sivakumar",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.24.5",
+    "@babel/core": "^7.24.5",
+    "@google/generative-ai": "^0.10.0",
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "pkg": "^5.8.1",
+    "say": "^0.16.0"
+  }
+}
