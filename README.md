@@ -25,8 +25,16 @@ yarn add termai
 Once installed, you can use termai directly by running:
 
 ```bash
-npx termai
+npx termai --api-key YOUR_API_KEY_HERE
 ```
+
+If you do not wish to specify the API_KEY here, create a `.env` file in the same directory, and paste the following code:
+
+```bash
+GEMINI_KEY=YOUR_API_KEY_HERE
+```
+
+Make sure to replace `YOUR_API_KEY_HERE` with your actual API_KEY
 
 This will initiate the interaction with the AI in the terminal.
 
