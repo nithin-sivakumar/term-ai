@@ -1,5 +1,5 @@
 {
-  "name": "term-ai",
+  "name": "termai",
   "version": "1.0.7",
   "description": "Interact with a customized Gemini-pro right in your terminal.",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "build": "pkg lib/index.js --targets node16-linux-x64 -o term-ai"
   },
   "bin": {
-    "term-ai": "./index.js"
+    "termai": "./index.js"
   },
   "keywords": [
     "AI",
