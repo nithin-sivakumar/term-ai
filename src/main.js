@@ -8,7 +8,7 @@ import minimist from 'minimist';
 
 const args = minimist(process.argv.slice(2));
 
-const geminiKey = args['api-key'];
+const geminiKey = args['api-key'] || process.env.GEMINI_KEY;
 
 if (!geminiKey) {
   console.log(
@@ -29,9 +29,10 @@ const reader = readline.createInterface({
 
 const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
+let isCode = false;
 const separator = '!!';
 const tts_speed = 1.2;
-const constraint =
+let constraint =
   " .Don't include * character in your response and include a '!!' after the first meaningful sentence. Don't give the answer in points. Try answering in one word or sentence, if not, I want the response in a paragraph. Limit the number of words to 600. Be friendly and witty, and as savage and humorous as possible.";
 
 let isFirstRequest = true;
@@ -45,11 +46,27 @@ export const askQuestion = async () => {
           process.exit(0);
         }
 
+        if (
+          prompt.split(' ').includes('code') ||
+          prompt.split(' ').includes('Code') ||
+          prompt.split(' ').includes('Program') ||
+          prompt.split(' ').includes('program')
+        ) {
+          constraint =
+            ' . Generate just the code. No explanation needed. Do not include comments';
+          isCode = true;
+        }
+
         const result = await model.generateContent(prompt + constraint);
         const response = result.response;
         const text = response.text();
-        say.speak(text.split(separator)[0], null, tts_speed);
-        console.log(text.bgBlack.green.bold);
+
+        if (isCode) {
+          console.log(text);
+        } else {
+          say.speak(text.split(separator)[0], null, tts_speed);
+          console.log(text.bgBlack.green.bold);
+        }
 
         // const result = await model.generateContentStream([prompt]);
 
@@ -78,8 +95,13 @@ export const askQuestion = async () => {
         const result = await model.generateContent(prompt + constraint);
         const response = result.response;
         const text = response.text();
-        say.speak(text.split(separator)[0], null, tts_speed);
-        console.log(text.bgBlack.green.bold);
+
+        if (isCode) {
+          console.log(text);
+        } else {
+          say.speak(text.split(separator)[0], null, tts_speed);
+          console.log(text.bgBlack.green.bold);
+        }
 
         // const result = await model.generateContentStream([prompt]);
 
