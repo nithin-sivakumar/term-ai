@@ -6,7 +6,7 @@ import 'colors';
 import say from 'say';
 import minimist from 'minimist';
 import clipboard from 'clipboardy';
-import { spawn } from 'child_process';
+import { execSync } from 'child_process';
 
 const args = minimist(process.argv.slice(2));
 
@@ -55,7 +55,7 @@ async function intentionChecker(query) {
     const response = result.response;
     const text = response.text();
 
-    // console.log(text);
+    console.log(text);
 
     return text;
   } catch (error) {
@@ -100,37 +100,38 @@ async function askTheAi(prompt) {
       const text = await response.text();
       console.log(text);
       // Execute the command
-      // execSync(text, (error, stdout, stderr) => {
-      //   if (error) {
-      //     console.error(`Error executing command: ${error}`);
-      //     return;
-      //   }
-      //   console.log(`Action performed successfully.`.bgCyan.white.bold);
-      // });
-      const command = text.trim(); // Ensure text has no leading/trailing whitespace
-      const parts = command.split(/\s+/); // Split the command into parts
-
-      const child = spawn(parts[0], parts.slice(1));
-
-      child.stdout.on('data', (data) => {
-        process.stdout.write(data); // Stream command output to the terminal
-      });
-
-      child.stderr.on('data', (data) => {
-        process.stderr.write(data); // Stream command errors to the terminal
-      });
-
-      child.on('error', (error) => {
-        console.error(`Error executing command: ${error}`);
-      });
-
-      child.on('close', (code) => {
-        if (code === 0) {
-          console.log(`Action performed successfully.`.bgCyan.white.bold);
-        } else {
-          console.error(`Command exited with code ${code}`);
+      execSync(text, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error executing command: ${error}`);
+          return;
         }
+        console.log(`Action performed successfully.`.bgCyan.white.bold);
       });
+      // Alt
+      // const command = text.trim(); // Ensure text has no leading/trailing whitespace
+      // const parts = command.split(/\s+/); // Split the command into parts
+
+      // const child = spawn(parts[0], parts.slice(1));
+
+      // child.stdout.on('data', (data) => {
+      //   process.stdout.write(data); // Stream command output to the terminal
+      // });
+
+      // child.stderr.on('data', (data) => {
+      //   process.stderr.write(data); // Stream command errors to the terminal
+      // });
+
+      // child.on('error', (error) => {
+      //   console.error(`Error executing command: ${error}`);
+      // });
+
+      // child.on('close', (code) => {
+      //   if (code === 0) {
+      //     console.log(`Action performed successfully.`.bgCyan.white.bold);
+      //   } else {
+      //     console.error(`Command exited with code ${code}`);
+      //   }
+      // });
     } else if (intention == 'E') {
       console.log(missingOsError.bgBlack.green.bold);
     } else {
