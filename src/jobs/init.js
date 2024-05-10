@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import readline from 'readline';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { checkApiKey } from './keyCheck.js';
