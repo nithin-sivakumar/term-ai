@@ -39,13 +39,15 @@ let constraint =
 
 let isFirstRequest = true;
 const intentionCheck =
-  '\nWhat is the intention of the user in the above prompt. Reply with a single letter. Reply Y if he is trying to generate a code, and reply N if not. If the user is trying to execute any terminal command or system command (like turning on bluetooth, checking battery percentage, changing volume and brightness, creating files and folders, etc) and has specified the platform (OS), reply with F. If the OS is not specified for system related tasks, reply with E.';
+  '\nWhat is the intention of the user in the above prompt. Reply with a single letter. Reply Y if he is trying to generate a code, and reply N if not. If the user is trying to execute any terminal command or system command (like turning on bluetooth, checking battery percentage, changing volume and brightness, creating files and folders, etc) and has specified the platform (OS), reply with F. If the OS is not specified for system related tasks, reply with E.\n\nIf the users intention is to ask who created this, or who is the creator of this, or the team working behind this, reply with a C.';
 const codeConstraint =
   '\nTry to avoid comments unless specified above. Try to avoid explanations unless requested above. If explanations are asked above, be beginner friendly and explain it in depth with examples.';
 const terminalConstraint =
   '\nUse root privileges only if required. Try to avoid comments. Try to avoid explanations. Just give me the command to be executed in the terminal.';
 const missingOsError =
   'The command you are trying to execute is platform dependent. Kindly specify your OS details and try again.';
+const creator =
+  '\nExpand this and respond that you were programmed by Nithin Sivakumar. You depend on Gemini for certain tasks but your prompts are manipulated before sending them to the AI model. You are constantly being updated and you intend to keep learning to understand the world you live in, in a much deeper way.';
 
 async function intentionChecker(query) {
   try {
@@ -134,6 +136,11 @@ async function askTheAi(prompt) {
       // });
     } else if (intention == 'E') {
       console.log(missingOsError.bgBlack.green.bold);
+    } else if (intention == 'C') {
+      const result = await model.generateContent(prompt + creator);
+      const response = await result.response;
+      const text = await response.text();
+      console.log(text.bgBlack.green.bold);
     } else {
       const result = await model.generateContent(prompt + constraint);
       const response = result.response;
