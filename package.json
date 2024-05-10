@@ -1,6 +1,6 @@
 {
   "name": "termai",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Interact with a customized Gemini-pro right in your terminal.",
   "main": "index.js",
   "type": "module",
