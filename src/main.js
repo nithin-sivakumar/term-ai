@@ -55,7 +55,7 @@ async function intentionChecker(query) {
     const response = result.response;
     const text = response.text();
 
-    console.log(text);
+    // console.log(text);
 
     return text;
   } catch (error) {
